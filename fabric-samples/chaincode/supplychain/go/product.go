@@ -1,32 +1,31 @@
 package main
 
 import (
-    "encoding/json"
     "fmt"
     "github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
 // CreateProduct adds a new product to the ledger
-func (s *SmartContract) CreateProduct(ctx contractapi.TransactionContextInterface, productID string, name string, description string, manufacturingDate string, batchNumber string) error {
+func (s *SmartContract) CreateProduct(ctx contractapi.TransactionContextInterface, productID, name, description, manufacturingDate, batchNumber string) error {
+    existingProduct, err := s.QueryProduct(ctx, productID)
+    if err == nil && existingProduct != nil {
+        return fmt.Errorf("product with ID %s already exists", productID)
+    }
+
     product := Product{
-        ProductID: productID,
-        Name: name,
-        Description: description,
+        ProductID:         productID,
+        Name:              name,
+        Description:       description,
         ManufacturingDate: manufacturingDate,
-        BatchNumber: batchNumber,
-        Status: "Created",
+        BatchNumber:       batchNumber,
+        Status:            "Created",
     }
 
-    productAsBytes, err := json.Marshal(product)
-    if err != nil {
-        return err
-    }
-
-    return ctx.GetStub().PutState(productID, productAsBytes)
+    return putState(ctx, productID, product)
 }
 
 // SupplyProduct updates the product status with supply details
-func (s *SmartContract) SupplyProduct(ctx contractapi.TransactionContextInterface, productID string, supplyDate string, warehouseLocation string) error {
+func (s *SmartContract) SupplyProduct(ctx contractapi.TransactionContextInterface, productID, supplyDate, warehouseLocation string) error {
     product, err := s.QueryProduct(ctx, productID)
     if err != nil {
         return err
@@ -36,12 +35,11 @@ func (s *SmartContract) SupplyProduct(ctx contractapi.TransactionContextInterfac
     product.WarehouseLocation = warehouseLocation
     product.Status = "Supplied"
 
-    productAsBytes, _ := json.Marshal(product)
-    return ctx.GetStub().PutState(productID, productAsBytes)
+    return putState(ctx, productID, *product)
 }
 
 // WholesaleProduct updates the product with wholesale details
-func (s *SmartContract) WholesaleProduct(ctx contractapi.TransactionContextInterface, productID string, wholesaleDate string, wholesaleLocation string, quantity int) error {
+func (s *SmartContract) WholesaleProduct(ctx contractapi.TransactionContextInterface, productID, wholesaleDate, wholesaleLocation string, quantity int) error {
     product, err := s.QueryProduct(ctx, productID)
     if err != nil {
         return err
@@ -52,37 +50,26 @@ func (s *SmartContract) WholesaleProduct(ctx contractapi.TransactionContextInter
     product.Quantity = quantity
     product.Status = "Wholesaled"
 
-    productAsBytes, _ := json.Marshal(product)
-    return ctx.GetStub().PutState(productID, productAsBytes)
+    return putState(ctx, productID, *product)
 }
 
 // QueryProduct retrieves a product from the ledger by productID
 func (s *SmartContract) QueryProduct(ctx contractapi.TransactionContextInterface, productID string) (*Product, error) {
-    productAsBytes, err := ctx.GetStub().GetState(productID)
-    if err != nil {
-        return nil, fmt.Errorf("Failed to read from world state: %s", err.Error())
-    }
-    if productAsBytes == nil {
-        return nil, fmt.Errorf("Product %s does not exist", productID)
-    }
-
-    var product Product
-    err = json.Unmarshal(productAsBytes, &product)
+    product, err := getState[Product](ctx, productID)
     if err != nil {
         return nil, err
     }
-
-    return &product, nil
+    return product, nil
 }
 
 // UpdateProductStatus updates the status of a product (e.g., sold)
-func (s *SmartContract) UpdateProductStatus(ctx contractapi.TransactionContextInterface, productID string, status string) error {
+func (s *SmartContract) UpdateProductStatus(ctx contractapi.TransactionContextInterface, productID, status string) error {
     product, err := s.QueryProduct(ctx, productID)
     if err != nil {
         return err
     }
 
     product.Status = status
-    productAsBytes, _ := json.Marshal(product)
-    return ctx.GetStub().PutState(productID, productAsBytes)
+
+    return putState(ctx, productID, *product)
 }

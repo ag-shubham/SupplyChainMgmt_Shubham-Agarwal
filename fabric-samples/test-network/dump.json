@@ -1035,18 +1035,18 @@
 					},
 					"header": {
 						"channel_header": {
-							"channel_id": "mychannel",
+							"channel_id": "channel1",
 							"epoch": "0",
 							"extension": null,
-							"timestamp": "2024-10-01T11:53:31Z",
+							"timestamp": "2024-10-02T14:52:49Z",
 							"tls_cert_hash": null,
-							"tx_id": "d9b9961be2cd2aadec7a30c79283bc659a0c2c59dd732d08d3da28f52b3f61b6",
+							"tx_id": "a85e6714b51209a227c4e2e939fb26b28ab070bc9cdf6df882c4208dd84ab187",
 							"type": 1,
 							"version": 1
 						},
 						"signature_header": {
 							"creator": null,
-							"nonce": "juR3n67YXMOXDjFbFMza9afJz7Ls1uCw"
+							"nonce": "xvST4TER5AKW6FbLW5rxFRSuRXjCRtHU"
 						}
 					}
 				},
@@ -1055,7 +1055,7 @@
 		]
 	},
 	"header": {
-		"data_hash": "YhjBVuk14s4wxyg3+tjf2QX64B3FdJkFQvsMr2urkmE=",
+		"data_hash": "Be8gOfVdQkFi3DvA+jxATduw3DFmjyW8ja1P7KYRFZY=",
 		"number": "0",
 		"previous_hash": null
 	},

@@ -46,7 +46,7 @@ createAnchorPeerUpdate() {
 
 updateAnchorPeer() {
   infoln "Updating anchor peer for ${ORG_NAME} on channel $CHANNEL_NAME"
-  peer channel update -o orderer1.example.com:7050 --ordererTLSHostnameOverride orderer1.example.com -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER_CA" >&log.txt
+  peer channel update -o orderer1.example.com:7050 --ordererTLSHostnameOverride orderer1.example.com -c $CHANNEL_NAME -f ${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile "$ORDERER1_CA" >&log.txt
   res=$?
   cat log.txt
   verifyResult $res "Anchor peer update failed"

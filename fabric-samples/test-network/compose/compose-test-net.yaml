@@ -170,6 +170,7 @@ services:
     volumes:
       - ../organizations/peerOrganizations/producer.example.com/peers/peer1.producer.example.com:/etc/hyperledger/fabric
       - peer1.producer.example.com:/var/hyperledger/production
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /root
     command: peer node start
     ports:
@@ -199,6 +200,7 @@ services:
     volumes:
       - ../organizations/peerOrganizations/supplier.example.com/peers/peer0.supplier.example.com:/etc/hyperledger/fabric
       - peer0.supplier.example.com:/var/hyperledger/production
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /root
     command: peer node start
     ports:
@@ -227,6 +229,7 @@ services:
     volumes:
       - ../organizations/peerOrganizations/supplier.example.com/peers/peer1.supplier.example.com:/etc/hyperledger/fabric
       - peer1.supplier.example.com:/var/hyperledger/production
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /root
     command: peer node start
     ports:
@@ -256,6 +259,7 @@ services:
     volumes:
       - ../organizations/peerOrganizations/wholesaler.example.com/peers/peer0.wholesaler.example.com:/etc/hyperledger/fabric
       - peer0.wholesaler.example.com:/var/hyperledger/production
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /root
     command: peer node start
     ports:
@@ -284,6 +288,7 @@ services:
     volumes:
       - ../organizations/peerOrganizations/wholesaler.example.com/peers/peer1.wholesaler.example.com:/etc/hyperledger/fabric
       - peer1.wholesaler.example.com:/var/hyperledger/production
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /root
     command: peer node start
     ports:
